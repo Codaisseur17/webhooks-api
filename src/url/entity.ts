@@ -9,7 +9,7 @@ export default class Url extends BaseEntity {
   id?: number
 
   @Column('integer', {nullable:false})
-  qid: number
+  quizz_id: number
 
   @Column('text', {nullable:false})
   url: string
