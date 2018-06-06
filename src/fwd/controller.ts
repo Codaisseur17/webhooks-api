@@ -1,8 +1,7 @@
 import {JsonController, Post, HttpCode, Body, HttpError} from 'routing-controllers'
 import Fwd from './entity'
+import Url from '../url/entity'
 import * as request from 'superagent'
-
-const testUrl = 'http://localhost:4040/incoming'
 
 // define custom external API error
 class ExtApiError extends HttpError {
@@ -33,14 +32,18 @@ export default class FwdController {
     // used for checking successful send operation outside of catch
     let forwardErr
 
-    // got quiz response
-
     // check if quiz exists in url db, get url from there if exists
+    const extApi = await Url.findOne({quizz_id: quizResult.quizz_id})
+    if (!extApi) {
+      return {
+        message: `Quiz${quizResult.quizz_id} is without webhook URL - nothing to do here.`
+      }
+    }    
 
     // send it to external API
     // have to be async for err check
     await request
-      .post(testUrl)
+      .post(extApi.url)
       .send(quizResult)
       .then(res => {
         // incoming response from external API
@@ -56,7 +59,7 @@ export default class FwdController {
     if (!forwardErr) {
       return {
         message: `data successfully forwarded`,
-        sentTo: testUrl,
+        sentTo: extApi.url,
         quizResult,
       }
     } else {
