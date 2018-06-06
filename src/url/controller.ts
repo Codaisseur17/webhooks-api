@@ -3,7 +3,7 @@ import Url from './entity'
 
 @JsonController()
 export default class UrlController {
-  @Post('/newquizhook')
+  @Post('/quizhook')
   @HttpCode(201)
   async createUrl(@Body() body: Url) {
     console.log(`Incoming POST body param:`, body)
@@ -11,7 +11,7 @@ export default class UrlController {
     return `webhook url saved for quiz ${body.quizz_id}`
   }
 
-  @Put('/editquizhook')
+  @Put('/edithook')
   @HttpCode(200)
   async updateWebhook(@Body() body: Url) {
     const url = await Url.findOne({quizz_id: body.quizz_id})
