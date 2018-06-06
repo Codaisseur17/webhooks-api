@@ -16,12 +16,14 @@
     "pg": "^7.4.1",
     "routing-controllers": "^0.7.7",
     "typeorm": "^0.1.16",
-    "typescript": "*",
     "typescript-eslint-parser": "15.0.0"
   },
   "scripts": {
     "start": "node .",
     "dev": "nodemon --inspect .",
     "watch": "node_modules/.bin/tsc -w"
+  },
+  "devDependencies": {
+    "typescript": "^2.9.1"
   }
 }
