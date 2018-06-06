@@ -25,7 +25,7 @@ class ExtApiError extends HttpError {
 
 @JsonController()
 export default class FwdController {
-  @Post('/quizhook')
+  @Post('/reshook')
   @HttpCode(200)
   async sendQuizUpdate(@Body() quizResult: Fwd) {
     // init of err object outside of external API request
@@ -55,7 +55,8 @@ export default class FwdController {
     // check for forwardErr, return based on that
     if (!forwardErr) {
       return {
-        message: 'data successfully forwarded',
+        message: `data successfully forwarded`,
+        sentTo: testUrl,
         quizResult,
       }
     } else {
