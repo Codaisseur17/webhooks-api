@@ -17,7 +17,7 @@ createUrl(
 
 @Put('/.....')
 @HttpCode(200)
-asynch updateWebhook(
+async updateWebhook(
 @Body() body: Url){
 
 const url = await Url.findOne({quizz_id: body.quizz_id})
