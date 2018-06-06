@@ -1,5 +1,23 @@
-import {JsonController, Post, Put, HttpCode, Body} from 'routing-controllers'
+import {JsonController, Post, Put, HttpCode, Body, HttpError} from 'routing-controllers'
 import Url from './entity'
+
+// define custom existingUrl error
+class UrlExistsError extends HttpError {
+  public message: string
+  public args: any[]
+  constructor(message: string, args: any[] = []) {
+    super(500)
+    Object.setPrototypeOf(this, UrlExistsError.prototype)
+    this.message = message
+    this.args = args
+  }
+  toJSON() {
+    return {
+      statusCode: this.httpCode,
+      message: this.message,
+    }
+  }
+}
 
 @JsonController()
 export default class UrlController {
@@ -7,8 +25,16 @@ export default class UrlController {
   @HttpCode(201)
   async createUrl(@Body() body: Url) {
     console.log(`Incoming POST body param:`, body)
-    await body.save()
-    return `webhook url saved for quiz ${body.quizz_id}`
+    const url = await Url.findOne({quizz_id: body.quizz_id})
+
+    if (url) {
+      throw new UrlExistsError(`webhook URL is already existing for quizId ${body.quizz_id} - can't overwrite at quiz creation`)
+    } else {
+      await body.save()
+      return {
+        message: `webhook url saved for quiz ${body.quizz_id}`
+      }
+    }
   }
 
   @Put('/edithook')
