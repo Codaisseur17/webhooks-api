@@ -36,9 +36,9 @@ export default class FwdController {
     const extApi = await Url.findOne({quizz_id: quizResult.quizz_id})
     if (!extApi) {
       return {
-        message: `Quiz${quizResult.quizz_id} is without webhook URL - nothing to do here.`
+        message: `Quiz${quizResult.quizz_id} is without webhook URL - nothing to do here.`,
       }
-    }    
+    }
 
     // send it to external API
     // have to be async for err check
@@ -52,7 +52,7 @@ export default class FwdController {
       .catch(err => {
         // incoming error from external API
         forwardErr = err
-        //console.log(err)
+        console.log(err)
       })
 
     // check for forwardErr, return based on that
@@ -64,6 +64,16 @@ export default class FwdController {
       }
     } else {
       throw new ExtApiError('data forwarding to external API failed')
+    }
+  }
+
+  @Post('/mockExtApi')
+  @HttpCode(200)
+  async receiveUpdate(@Body() update: any) {
+    //console.log(update)
+    return {
+      message: 'mock external API received update',
+      update
     }
   }
 }
