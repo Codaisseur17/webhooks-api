@@ -43,10 +43,15 @@ export default class FwdController {
     console.log(allQuiz)
     //
     // filter result for getting quizID based on name
-    const resolveName = allQuiz.find(item => item.id === parseInt(quizResult.quizId) ).title 
-    console.log(resolveName)
+    const resolveName = allQuiz.find(item => item.id === parseInt(quizResult.quizId) )
+    if (!resolveName) {
+      return {
+        message: `Quiz ${quizResult.quizId} does not exist in Quiz database.`
+      }
+    }
+    console.log(resolveName.title)
 
-    const extApi = await Url.findOne({quizName: resolveName})
+    const extApi = await Url.findOne({quizName: resolveName.title})
     if (!extApi || extApi.url === null) {
       return {
         message: `Quiz${quizResult.quizId} is without webhook URL - nothing to do here.`,
