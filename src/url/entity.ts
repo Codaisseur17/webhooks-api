@@ -11,6 +11,6 @@ export default class Url extends BaseEntity {
   @Column('text', {nullable:false})
   quizName: string
 
-  @Column('text', {nullable:false})
+  @Column('text', {nullable:true})
   url: string
 }
