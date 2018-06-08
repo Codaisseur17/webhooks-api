@@ -9,12 +9,12 @@ export default class Fwd extends BaseEntity {
   id?: number
 
   @Column('integer', {nullable:false})
-  quizz_id: number
+  quizId: number
 
   @Column('text', {nullable:false})
-  user_name: string
+  userId: number
 
   @Column ('integer', {nullable:false})
-  quizz_score: number
+  score: number
 
 }
