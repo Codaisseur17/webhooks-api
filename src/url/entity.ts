@@ -8,8 +8,8 @@ export default class Url extends BaseEntity {
   @PrimaryGeneratedColumn()
   id?: number
 
-  @Column('integer', {nullable:false})
-  quizz_id: number
+  @Column('text', {nullable:false})
+  quizName: string
 
   @Column('text', {nullable:false})
   url: string

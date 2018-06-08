@@ -25,14 +25,14 @@ export default class UrlController {
   @HttpCode(201)
   async createUrl(@Body() body: Url) {
     console.log(`Incoming POST body param:`, body)
-    const url = await Url.findOne({quizz_id: body.quizz_id})
+    const url = await Url.findOne({quizName: body.quizName})
 
     if (url) {
-      throw new UrlExistsError(`webhook URL is already existing for quizId ${body.quizz_id} - can't overwrite at quiz creation`)
+      throw new UrlExistsError(`webhook URL is already existing for quizId ${body.quizName} - can't overwrite at quiz creation`)
     } else {
       await body.save()
       return {
-        message: `webhook url saved for quiz ${body.quizz_id}`
+        message: `webhook url saved for quiz ${body.quizName}`
       }
     }
   }
@@ -40,9 +40,9 @@ export default class UrlController {
   @Put('/edithook')
   @HttpCode(200)
   async updateWebhook(@Body() body: Url) {
-    const url = await Url.findOne({quizz_id: body.quizz_id})
+    const url = await Url.findOne({quizName: body.quizName})
     if (url) {
-      url.quizz_id = body.quizz_id
+      url.quizName = body.quizName
       url.url = body.url
       url.save()
       return 'Saved'
