@@ -33,10 +33,10 @@ export default class FwdController {
     let forwardErr
 
     // check if quiz exists in url db, get url from there if exists
-    const extApi = await Url.findOne({quizz_id: quizResult.quizz_id})
+    const extApi = await Url.findOne({quizz_id: quizResult.quizId})
     if (!extApi) {
       return {
-        message: `Quiz${quizResult.quizz_id} is without webhook URL - nothing to do here.`,
+        message: `Quiz${quizResult.quizId} is without webhook URL - nothing to do here.`,
       }
     }
 
