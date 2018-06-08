@@ -47,7 +47,7 @@ export default class FwdController {
     console.log(resolveName)
 
     const extApi = await Url.findOne({quizName: resolveName})
-    if (!extApi) {
+    if (!extApi || extApi.url === null) {
       return {
         message: `Quiz${quizResult.quizId} is without webhook URL - nothing to do here.`,
       }
