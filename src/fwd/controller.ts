@@ -22,6 +22,10 @@ class ExtApiError extends HttpError {
   }
 }
 
+
+
+const quizzesUrl = process.env.QUIZZES_URL || 'http://quizzes:4001'
+
 @JsonController()
 export default class FwdController {
   @Post('/reshook')
@@ -32,8 +36,17 @@ export default class FwdController {
     // used for checking successful send operation outside of catch
     let forwardErr
 
-    // check if quiz exists in url db, get url from there if exists
-    const extApi = await Url.findOne({quizz_id: quizResult.quizId})
+    //
+    // request all quizzes
+    const allQuizJSON = await request.get(`${quizzesUrl}/quizzes/`).set('X-User-id', '1').set('X-User-isTeacher', 'true')
+    const allQuiz = JSON.parse(allQuizJSON.res.text).quizzes
+    console.log(allQuiz)
+    //
+    // filter result for getting quizID based on name
+    const resolveName = allQuiz.find(item => item.id === parseInt(quizResult.quizId) ).title 
+    console.log(resolveName)
+
+    const extApi = await Url.findOne({quizName: resolveName})
     if (!extApi) {
       return {
         message: `Quiz${quizResult.quizId} is without webhook URL - nothing to do here.`,
