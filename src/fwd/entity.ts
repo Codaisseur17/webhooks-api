@@ -11,7 +11,7 @@ export default class Fwd extends BaseEntity {
   @Column('integer', {nullable:false})
   quizId: number
 
-  @Column('text', {nullable:false})
+  @Column('integer', {nullable:false})
   userId: number
 
   @Column ('integer', {nullable:false})
